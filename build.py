@@ -11,7 +11,11 @@ use_plugin("python.distutils")
 name = "salt-microplastics-live"
 default_task = "publish"
 
+@init
+def initialize(project):
+    # Build Dependencies
+    project.build_depends_on("mockito")
 
 @init
 def set_properties(project):
-    pass
+    project.set_property("coverage_break_build", False)
