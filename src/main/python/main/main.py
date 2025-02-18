@@ -1,4 +1,5 @@
-import cv2, time
+import sys, os, time, ctypes
+import cv2
 from ultralytics import YOLO
 
 
@@ -6,6 +7,14 @@ def onMouse(event, x, y, flags, param):
     global clicked
     if event == cv2.EVENT_LBUTTONDOWN:
         clicked = True
+
+def shutdown():
+
+    if sys.platform == 'win32':
+        user32 = ctypes.WinDLL('user32')
+        user32.ExitWindowsEx(0x00000008, 0x00000000)
+    else:
+        os.system('sudo shutdown now')
 
 def detect(cap, model):
     plastics = 0
@@ -48,8 +57,11 @@ def main():
         detect(cap, model)
 
     cv2.destroyAllWindows()
+    time.sleep(1)
+    shutdown()
 
 
 if __name__ == "__main__":
     clicked = False
     main()
+    
