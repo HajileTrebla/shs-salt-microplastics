@@ -1,1 +1,6 @@
 .venv/
+target/
+*.pt
+src/main/python/*/__pycache__/*
+src/unittest/python/__pycache__/*
+__pycache__/*
