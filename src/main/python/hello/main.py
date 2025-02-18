@@ -1,16 +1,14 @@
-import cv2
+import cv2, time
 from ultralytics import YOLO
 
-# Load the YOLOv8 model
-# model = YOLO('yolov8n.pt')
-model = YOLO('saltplas.pt')
 
-# Open the video file
-cap = cv2.VideoCapture(0)
-plastics = 0
+def onMouse(event, x, y, flags, param):
+    global clicked
+    if event == cv2.EVENT_LBUTTONDOWN:
+        clicked = True
 
-# Loop through the video frames
-while cap.isOpened():
+def detect(cap, model):
+    plastics = 0
 
     success, frame = cap.read()
 
@@ -18,12 +16,9 @@ while cap.isOpened():
         results = model.track(frame, persist=True)
 
         plastics = results[0].boxes.cls.tolist().count(0)
-            
         annotated_frame = results[0].plot()
 
-        cv2.namedWindow("Webcam", cv2.WINDOW_NORMAL)
-        cv2.setWindowProperty("Webcam", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-        x, y, w, h = cv2.getWindowImageRect("Webcam")
+        x, y, w, h = cv2.getWindowImageRect("Microscope")
 
         text_size, _ = cv2.getTextSize("Microplastics Detected :"+str(plastics), cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
         # text_size, _ = cv2.getTextSize("People Detected :"+str(plastics), cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
@@ -32,8 +27,29 @@ while cap.isOpened():
         cv2.rectangle(annotated_frame, (0,25), ( w, 0-text_h), (0,0,0), -1)
         cv2.putText(annotated_frame, "Microplastics Detected :"+str(plastics), (20,20), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0))
         # cv2.putText(annotated_frame, "People Detected :"+str(plastics), (20,20), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0))
-        
-        cv2.imshow("Webcam", annotated_frame)
+        cv2.imshow("Microscope", annotated_frame)
 
-        if cv2.waitKey(1) == ord('q'):
-            break
+def main():
+    global clicked
+
+    # model = YOLO('yolov8n.pt')
+    model = YOLO('saltplas.pt')
+
+
+    cap = cv2.VideoCapture(0)
+    cv2.namedWindow("Microscope", cv2.WINDOW_NORMAL)
+    cv2.setWindowProperty("Microscope", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    cv2.setMouseCallback('Microscope', onMouse)
+
+    print('Showing camera feed. Click window or press any key to stop.')
+
+    while cv2.waitKey(1) == -1 and not clicked:
+        print(clicked)
+        detect(cap, model)
+
+    cv2.destroyAllWindows()
+
+
+if __name__ == "__main__":
+    clicked = False
+    main()
