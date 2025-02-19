@@ -16,7 +16,7 @@ def shutdown():
     else:
         os.system('sudo shutdown now')
 
-def detect(cap, model):
+def stream(cap, model):
     plastics = 0
 
     success, frame = cap.read()
@@ -38,7 +38,7 @@ def detect(cap, model):
         # cv2.putText(annotated_frame, "People Detected :"+str(plastics), (20,20), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0))
         cv2.imshow("Microscope", annotated_frame)
 
-def main():
+def detect():
     global clicked
 
     # model = YOLO('yolov8n.pt')
@@ -53,15 +53,17 @@ def main():
     print('Showing camera feed. Click window or press any key to stop.')
 
     while cv2.waitKey(1) == -1 and not clicked:
-        print(clicked)
-        detect(cap, model)
+        stream(cap, model)
 
     cv2.destroyAllWindows()
     time.sleep(1)
     shutdown()
 
+def main():
+    global clicked
+
+    clicked = False
+    detect()
 
 if __name__ == "__main__":
-    clicked = False
     main()
-    
