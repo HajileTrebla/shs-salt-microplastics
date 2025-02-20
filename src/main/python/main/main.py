@@ -1,4 +1,5 @@
 import sys, os, time, ctypes
+from os.path import dirname, join
 import cv2
 from ultralytics import YOLO
 
@@ -30,19 +31,19 @@ def stream(cap, model):
         x, y, w, h = cv2.getWindowImageRect("Microscope")
 
         text_size, _ = cv2.getTextSize("Microplastics Detected :"+str(plastics), cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
-        # text_size, _ = cv2.getTextSize("People Detected :"+str(plastics), cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
         text_w, text_h = text_size
 
         cv2.rectangle(annotated_frame, (0,25), ( w, 0-text_h), (0,0,0), -1)
         cv2.putText(annotated_frame, "Microplastics Detected :"+str(plastics), (20,20), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0))
-        # cv2.putText(annotated_frame, "People Detected :"+str(plastics), (20,20), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0))
         cv2.imshow("Microscope", annotated_frame)
 
 def detect():
     global clicked
 
-    # model = YOLO('yolov8n.pt')
-    model = YOLO('saltplas.pt')
+    root_path = dirname(dirname(dirname(dirname(dirname(__file__)))))
+    model_path = join(root_path, 'saltplas.pt')
+
+    model = YOLO(model_path)
 
 
     cap = cv2.VideoCapture(0)
