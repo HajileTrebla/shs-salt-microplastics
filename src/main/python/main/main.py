@@ -1,4 +1,5 @@
 import sys, os, time, ctypes
+import RPI.GPIO as GPIO
 from datetime import date, datetime
 from os.path import dirname, join
 import cv2
@@ -6,7 +7,6 @@ from ultralytics import YOLO
 
 
 def init_setup():
-    global root_path
     os.makedirs(os.path.join(root_path, 'saved_images'), exist_ok=True)
 
 def onMouse(event, x, y, flags, param):
@@ -23,8 +23,6 @@ def shutdown():
         os.system('sudo shutdown now')
 
 def capture(data):
-    global root_path
-
     save_dir = os.path.join(root_path, 'saved_images')
 
     frame, count, text_w, text_h = data
@@ -61,10 +59,6 @@ def stream(cap, model):
     return annotated_frame, plastics, w, text_h
 
 def detect():
-    global clicked
-    global power_button
-    global root_path
-
     model_path = join(root_path, 'saltplas.pt')
 
     model = YOLO(model_path)
@@ -76,7 +70,7 @@ def detect():
 
     print('Showing camera feed. Click window or press any key to stop.')
 
-    while not power_button:
+    while not GPIO.input(btn):
         while cv2.waitKey(1) == -1 and not clicked:
             stream(cap, model)
             time.sleep(1)
@@ -85,19 +79,30 @@ def detect():
 
     cv2.destroyAllWindows()
     time.sleep(1)
+
+    GPIO.cleanup()
     shutdown()
+
+def buttonSet():
+    global btn
+
+    btn = 7
+
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(btn, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def main():
     global clicked
-    global power_button
     global root_path
 
     root_path = dirname(dirname(dirname(dirname(dirname(__file__)))))
     clicked = False
-    power_button = False
 
     init_setup()
     detect()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(e)
