@@ -4,3 +4,4 @@ target/
 src/main/python/*/__pycache__/*
 src/unittest/python/__pycache__/*
 __pycache__/*
+saved_images/
