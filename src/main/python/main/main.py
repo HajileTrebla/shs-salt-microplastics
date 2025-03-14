@@ -73,7 +73,6 @@ def detect():
     while not GPIO.input(btn):
         while cv2.waitKey(1) == -1 and not clicked:
             stream(cap, model)
-            time.sleep(1)
         capture(stream(cap, model))
         clicked = False
 
