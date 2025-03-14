@@ -38,7 +38,7 @@ def capture(data):
     os.makedirs(save_dir, exist_ok=True)
 
     frame, count, text_w, text_h = data
-    path_time = datetime.now().strftime("%d%m%y.%H%M%S")
+    path_time = datetime.now().strftime("%d%m%y_%H%M%S")
 
 
 
