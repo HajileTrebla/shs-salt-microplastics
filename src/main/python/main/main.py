@@ -77,8 +77,10 @@ def detect():
 
     print('Showing camera feed. Click window or press any key to stop.')
 
-    while not GPIO.input(btn):
+    while GPIO.input(btn):
         while cv2.waitKey(1) == -1 and not clicked:
+            if GPIO.input(btn):
+                break
             stream(cap, model)
         capture(stream(cap, model))
         clicked = False
