@@ -104,6 +104,8 @@ def main():
     root_path = dirname(dirname(dirname(dirname(dirname(__file__)))))
     clicked = False
 
+    buttonSet()
+
     init_setup()
     detect()
 
