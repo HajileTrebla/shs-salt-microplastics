@@ -31,10 +31,16 @@ def shutdown():
 def capture(data):
     global root_path
 
-    save_dir = os.path.join(root_path, 'saved_images')
+    save_root_dir = os.path.join(root_path, 'saved_images')
+    date_dir  = datetime.now().strftime("%d-%m-%y")
+    save_dir = os.path.join(save_root_dir, date_dir)
+
+    os.makedirs(save_dir, exist_ok=True)
 
     frame, count, text_w, text_h = data
     path_time = datetime.now().strftime("%d%m%y.%H%M%S")
+
+
 
     file_name = os.path.join(save_dir,str(path_time)+'.jpeg')
 
