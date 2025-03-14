@@ -71,7 +71,7 @@ def detect():
     model = YOLO(model_path)
 
     cap = cv2.VideoCapture(0)
-    cv2.namedWindow("Microscope", cv2.WINDOW_NORMAL)
+    cv2.namedWindow("Microscope", cv2.WND_PROP_FULLSCREEN)
     # cv2.setWindowProperty("Microscope", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     cv2.setMouseCallback('Microscope', onMouse)
 
