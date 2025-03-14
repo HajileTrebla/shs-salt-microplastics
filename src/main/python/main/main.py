@@ -59,6 +59,7 @@ def stream(cap, model):
         cv2.rectangle(annotated_frame, (0,25), ( w, 0-(text_h*2)), (0,0,0), -1)
         cv2.putText(annotated_frame, "Microplastics Detected :"+str(plastics), (20,20), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0))
         cv2.imshow("Microscope", annotated_frame)
+        cv2.moveWindow("Microscope", 10, 50)
     return annotated_frame, plastics, w, text_h
 
 def detect():
