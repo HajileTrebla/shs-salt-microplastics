@@ -87,7 +87,8 @@ def detect():
     time.sleep(1)
 
     GPIO.cleanup()
-    shutdown()
+    print('shutdown')
+    # shutdown()
 
 def buttonSet():
     global btn
