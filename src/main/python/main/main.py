@@ -7,6 +7,7 @@ from ultralytics import YOLO
 
 
 def init_setup():
+    global root_path
     os.makedirs(os.path.join(root_path, 'saved_images'), exist_ok=True)
 
 def onMouse(event, x, y, flags, param):
@@ -23,6 +24,8 @@ def shutdown():
         os.system('sudo shutdown now')
 
 def capture(data):
+    global root_path
+
     save_dir = os.path.join(root_path, 'saved_images')
 
     frame, count, text_w, text_h = data
@@ -59,6 +62,10 @@ def stream(cap, model):
     return annotated_frame, plastics, w, text_h
 
 def detect():
+    global clicked
+    global root_path
+    global btn
+
     model_path = join(root_path, 'saltplas.pt')
 
     model = YOLO(model_path)
