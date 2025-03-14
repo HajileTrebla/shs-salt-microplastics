@@ -8,7 +8,12 @@ from ultralytics import YOLO
 
 def init_setup():
     global root_path
-    os.makedirs(os.path.join(root_path, 'saved_images'), exist_ok=True)
+
+    save_dir = os.path.join(root_path, 'saved_images')
+    os.makedirs(save_dir, exist_ok=True)
+    os.system('xdg-open "{}"'.format(save_dir))
+
+
 
 def onMouse(event, x, y, flags, param):
     global clicked
@@ -91,7 +96,7 @@ def detect():
 
     GPIO.cleanup()
     print('shutdown')
-    # shutdown()
+    shutdown()
 
 def buttonSet():
     global btn
