@@ -8,7 +8,7 @@ def loop():
 def main():
     global btn
 
-    btn = 7
+    btn = 17
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(btn, GPIO.IN, pull_up_down=GPIO.PUD_UP)
