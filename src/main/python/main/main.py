@@ -1,5 +1,5 @@
 import sys, os, time, ctypes
-import RPI.GPIO as GPIO
+import RPi.GPIO as GPIO
 from datetime import date, datetime
 from os.path import dirname, join
 import cv2
