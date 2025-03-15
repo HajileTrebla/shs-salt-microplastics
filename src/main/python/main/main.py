@@ -11,7 +11,7 @@ def init_setup():
 
     save_dir = os.path.join(root_path, 'saved_images')
     os.makedirs(save_dir, exist_ok=True)
-    os.system('xdg-open "{}"'.format(save_dir))
+    os.system('nohup xdg-open "{}"'.format(save_dir))
 
 
 
